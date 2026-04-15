@@ -174,15 +174,33 @@
         .kpi-card {
             background: white;
             border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border-right: 4px solid var(--primary);
-            transition: all 0.3s ease;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-right: 5px solid var(--primary);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .kpi-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .kpi-card:hover::before {
+            opacity: 1;
         }
 
         .kpi-card.growth-positive::before {
@@ -393,6 +411,672 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* === Advanced Animations === */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+
+        @keyframes bounce-soft {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slide-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scale-pop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes color-shift {
+            0%, 100% {
+                color: var(--primary);
+            }
+            50% {
+                color: var(--primary-light);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.95;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* === Floating Action Buttons === */
+        @keyframes fab-pop {
+            0% {
+                opacity: 0;
+                transform: scale(0) translateY(20px);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes fab-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fab-float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .fab-main {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fab-float 3s ease-in-out infinite;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .fab-main:hover {
+            transform: scale(1.15) translateY(-8px);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.6);
+        }
+
+        .fab-main.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .fab-submenu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .fab-submenu.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .fab-item {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            animation: fab-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .fab-item:nth-child(1) { animation-delay: 0.05s; }
+        .fab-item:nth-child(2) { animation-delay: 0.1s; }
+        .fab-item:nth-child(3) { animation-delay: 0.15s; }
+        .fab-item:nth-child(4) { animation-delay: 0.2s; }
+
+        .fab-item:hover {
+            transform: scale(1.1);
+        }
+
+        .fab-sales { background: linear-gradient(135deg, #ff6b6b, #ff5252); }
+        .fab-returns { background: linear-gradient(135deg, #ffa502, #ff8c42); }
+        .fab-payment { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .fab-report { background: linear-gradient(135deg, #2196F3, #1976D2); }
+
+        .fab-label {
+            position: absolute;
+            right: 70px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .fab-item:hover .fab-label {
+            opacity: 1;
+        }
+
+        /* === Drill-Down Modal === */
+        .drill-down-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .drill-down-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: scale-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .drill-down-header {
+            padding: 24px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .drill-down-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .drill-down-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drill-down-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .drill-down-body {
+            padding: 24px;
+        }
+
+        .drill-down-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .drill-down-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            animation: slide-in-right 0.5s ease-out;
+        }
+
+        .drill-down-item:hover {
+            transform: translateX(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .drill-down-item-title {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .drill-down-item-value {
+            font-size: 24px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        /* === Carousel === */
+        @keyframes slide-carousel {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: white;
+            height: 100%;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+            animation: slide-carousel 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .carousel-slide-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .carousel-slide-value {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .carousel-slide-meta {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev {
+            left: 16px;
+        }
+
+        .carousel-nav.next {
+            right: 16px;
+        }
+
+        /* === Real-time Sync Animation === */
+        @keyframes sync-pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+        }
+
+        .sync-indicator {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: sync-pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+
+        .sync-indicator.syncing {
+            animation: sync-pulse 1s ease-in-out infinite;
+            background: #f59e0b;
+        }
+
+        .sync-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 2px;
+            text-align: center;
+        }
+
+        /* KPI Card Enhanced Animations */
+        .kpi-card {
+            animation: slide-in-left 0.6s ease-out;
+        }
+
+        .kpi-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .kpi-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .kpi-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .kpi-card:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        .kpi-card:nth-child(n+6) {
+            animation-delay: 0.5s;
+        }
+
+        .kpi-card-value {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .kpi-card:hover .kpi-card-value {
+            animation: color-shift 1.5s ease-in-out infinite;
+            transform: scale(1.1);
+        }
+
+        /* Trending Badge */
+        .trend-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            animation: bounce-soft 2s ease-in-out infinite;
+        }
+
+        .trend-badge.positive {
+            color: var(--secondary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .trend-badge.negative {
+            color: var(--accent);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* System Alerts */
+        .alert-box {
+            animation: slide-in-right 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .alert-box:hover {
+            transform: translateX(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Toast Notifications - Enhanced */
+        #toast {
+            animation: slide-in-left 0.3s ease-out;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            z-index: 9999;
+            min-width: 300px;
+        }
+
+        #toast.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        #toast.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        #toast.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        /* Chart Animation */
+        .chart-container {
+            animation: fade-in 0.6s ease-out;
+            position: relative;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        /* Loading States */
+        .loading-skeleton {
+            animation: shimmer 1.5s infinite;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+        }
+
+        /* Modal Entrance */
+        #activeModal {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Button Interactions */
+        button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Input Focus */
+        input:focus, select:focus, textarea:focus {
+            animation: scale-pop 0.3s ease-out;
+        }
+
+        /* Table Row Hover */
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc !important;
         }
 
         /* ===== تحسينات الطباعة ===== */
@@ -796,12 +1480,6 @@
             <!-- فوتر خاص للطباعة يظهر في آخر صفحة -->
             <div id="printPageFooter" class="print-footer hidden print:block mt-auto p-2 text-[10px] text-slate-700 border-t border-slate-300">
                 <div class="flex flex-col lg:flex-row justify-between items-center gap-2 px-4">
-                    <div class="text-right leading-tight">
-                        <div class="font-black">Mahmoud Aboutaleb</div>
-                        <div>+2 012 7035 3230</div>
-                        <div>Mahmoud.aboutaleb92@gmail.com</div>
-                        <div>اعداد وتصميم | محمود أبوطالب</div>
-                    </div>
                     <div class="text-left text-[9px] text-slate-500">
                         <span class="page-number"></span>
                     </div>
@@ -823,11 +1501,53 @@
         <button onclick="handleCustomerMenu('volume')"><i class="fas fa-chart-line text-purple-500"></i> حجم تعامل العميل</button>
     </div>
 
-    <!-- التنبيهات (Toast) -->
+    <!-- التنبيهات (Toast) - Enhanced -->
     <div id="toast"
-        class="fixed bottom-5 right-5 bg-slate-800 text-white px-6 py-3 rounded-lg shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        class="fixed bottom-5 right-5 bg-slate-800 text-white px-6 py-3 rounded-lg shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 min-w-[300px]">
         <i class="fas fa-check-circle text-green-400"></i>
         <span id="toastMsg">تمت العملية بنجاح</span>
+    </div>
+
+    <!-- Floating Action Button Container -->
+    <div class="fab-container" id="fabContainer">
+        <button class="fab-main" id="fabMain" onclick="toggleFABMenu()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-submenu" id="fabSubmenu">
+            <button class="fab-item fab-sales" onclick="openModal('sales'); closeFABMenu()" title="إضافة فاتورة جديدة">
+                <span class="fab-label">فاتورة جديدة</span>
+                <i class="fas fa-file-invoice-dollar"></i>
+            </button>
+            <button class="fab-item fab-returns" onclick="openModal('returns'); closeFABMenu()" title="إضافة مرتجع">
+                <span class="fab-label">مرتجع جديد</span>
+                <i class="fas fa-undo"></i>
+            </button>
+            <button class="fab-item fab-payment" onclick="openModal('payments'); closeFABMenu()" title="تحصيل جديد">
+                <span class="fab-label">تحصيل جديد</span>
+                <i class="fas fa-hand-holding-usd"></i>
+            </button>
+            <button class="fab-item fab-report" onclick="openModal('customers'); closeFABMenu()" title="عميل جديد">
+                <span class="fab-label">عميل جديد</span>
+                <i class="fas fa-user-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Drill-Down Modal -->
+    <div id="drillDownModal" class="drill-down-modal" style="display: none;" onclick="if(event.target === this) closeDrillDown()">
+        <div class="drill-down-content">
+            <div class="drill-down-header">
+                <h2 id="drillDownTitle">تفاصيل الإحصائية</h2>
+                <button class="drill-down-close" onclick="closeDrillDown()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="drill-down-body">
+                <div id="drillDownContent" class="drill-down-grid">
+                    <!-- سيتم ملؤه ديناميكياً -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- كود الجافاسكربت -->
@@ -836,6 +1556,7 @@
         const DB_KEY = 'PharmaOne_DB_v4';
         let currentUser = null; // { role: 'admin' | 'pharmacist' | 'rep', id: '...' }
         let autoBackupInterval = null;
+        let currentCarouselIndex = 0;
 
         let db = {
             inventory: [],
@@ -1005,9 +1726,13 @@
             const activeLink = document.getElementById(`nav-${viewId}`);
             if (activeLink) activeLink.classList.add('active');
 
-            // Render Content
+            // Render Content with Loading Animation
             const content = document.getElementById('contentArea');
-            content.innerHTML = '<div class="text-center py-20"><i class="fas fa-circle-notch fa-spin text-3xl text-blue-500"></i></div>'; // Loader
+            
+            // Fade out effect
+            content.style.opacity = '0.5';
+            content.style.pointerEvents = 'none';
+            content.innerHTML = '<div class="text-center py-20" style="animation: bounce-soft 1.5s infinite;"><i class="fas fa-circle-notch fa-spin text-3xl text-blue-500"></i><p style="margin-top: 12px; color: #666;">جاري التحميل...</p></div>'; 
 
             // Titles
             const titles = {
@@ -1028,6 +1753,9 @@
             setTimeout(() => {
                 content.innerHTML = ''; // Clear loader
                 content.className = 'flex-1 overflow-y-auto p-6 scroll-smooth fade-in';
+                content.style.opacity = '1';
+                content.style.pointerEvents = 'auto';
+                content.style.transition = 'opacity 0.3s ease';
 
                 switch (viewId) {
                     case 'dashboard': renderDashboard(content); break;
@@ -1043,7 +1771,10 @@
                     case 'reports': renderReportsCenter(content); break;
                     case 'settings': renderSettings(content); break;
                 }
-            }, 200);
+                
+                // Smooth scroll to top
+                content.scrollTop = 0;
+            }, 300);
         }
 
         // --- 5. Views Renderers ---
@@ -1070,6 +1801,9 @@
                             </button>
                         </div>
                         <div class="flex gap-2">
+                            <button onclick="simulateDataSync()" id="syncButton" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:shadow-lg transition shadow-sm flex items-center gap-2">
+                                <i class="fas fa-sync"></i> مزامنة بيانات
+                            </button>
                             <button onclick="window.print()" class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-800 transition shadow-sm print-btn flex items-center gap-2"><i class="fas fa-print"></i> طباعة اللوحة</button>
                             <button onclick="shareDashboardMetrics()" class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-teal-700 transition shadow-sm flex items-center gap-2"><i class="fas fa-share-alt"></i> مشاركة</button>
                         </div>
@@ -1101,6 +1835,13 @@
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="dashboardCards">
                     <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Statistics Carousel Section -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-8" style="height: 200px;">
+                    <div class="carousel-container" id="statsCarousel" style="height: 100%;">
+                        <!-- Carousel will be injected via JS -->
+                    </div>
                 </div>
 
                 <!-- System Alerts Section -->
@@ -1228,16 +1969,21 @@
             const salesGrowth = pSales > 0 ? ((totalSales - pSales) / pSales * 100).toFixed(1) : 0;
             const paymentsGrowth = pPayments > 0 ? ((totalPayments - pPayments) / pPayments * 100).toFixed(1) : 0;
 
+            const debtIndicator = totalSales > 0 ? ((totalDebt / totalSales) * 100).toFixed(1) : 0;
+            const areas = new Set();
+            db.customers.forEach(c => { if(c.area) areas.add(c.area); });
+            
             const cardsData = [
                 { id: 'sales', label: 'إجمالي المبيعات', val: totalSales, hexColor: 'var(--primary)', icon: 'fa-file-invoice-dollar', format: true, rawData: fSales, dataKey: 'total', growth: salesGrowth },
-                { id: 'activeDrugs', label: 'الأدوية النشطة', val: db.inventory.length, hexColor: '#10b981', icon: 'fa-pills', format: false, rawData: [], dataKey: '', growth: 0 },
-                { id: 'stockAlerts', label: 'تنبيهات المخزون', val: db.inventory.filter(i => parseFloat(i.quantity || 0) <= 10).length, hexColor: 'var(--warning)', icon: 'fa-exclamation-triangle', format: false, rawData: [], dataKey: '', growth: 0 },
-                { id: 'adherence', label: 'معدل التحصيل', val: totalSales > 0 ? (totalPayments / totalSales * 100).toFixed(1) : 0, hexColor: 'var(--secondary)', icon: 'fa-percentage', format: false, rawData: [], dataKey: '', growth: paymentsGrowth, unit: '%' },
+                { id: 'returns', label: 'إجمالي المرتجعات', val: totalReturns, hexColor: '#f97316', icon: 'fa-undo', format: true, rawData: fReturns, dataKey: 'amount', growth: 0 },
+                { id: 'collections', label: 'إجمالي التحصيل', val: totalPayments, hexColor: 'var(--secondary)', icon: 'fa-hand-holding-usd', format: true, rawData: fPayments, dataKey: 'amount', growth: paymentsGrowth },
                 { id: 'totalDebt', label: 'إجمالي المديونية', val: totalDebt, hexColor: 'var(--accent)', icon: 'fa-balance-scale', format: true, rawData: [], dataKey: '', growth: 0 },
                 { id: 'cashDebt', label: 'مديونية النقدي', val: cashDebt, hexColor: '#f59e0b', icon: 'fa-money-bill', format: true, rawData: [], dataKey: '', growth: 0 },
                 { id: 'weeklyDebt', label: 'مديونية الأسبوعي', val: weeklyDebt, hexColor: '#f97316', icon: 'fa-calendar-week', format: true, rawData: [], dataKey: '', growth: 0 },
+                { id: 'debtIndicator', label: 'مؤشر المديونية %', val: debtIndicator, hexColor: '#dc2626', icon: 'fa-chart-pie', format: false, rawData: [], dataKey: '', growth: 0, unit: '%' },
                 { id: 'customers', label: 'عدد العملاء', val: db.customers.length, hexColor: '#8b5cf6', icon: 'fa-users', format: false, rawData: [], dataKey: '', growth: 0 },
                 { id: 'reps', label: 'عدد المناديب', val: db.hr.length, hexColor: '#6366f1', icon: 'fa-user-tie', format: false, rawData: [], dataKey: '', growth: 0 },
+                { id: 'areas', label: 'عدد المناطق', val: areas.size, hexColor: '#14b8a6', icon: 'fa-map-marker-alt', format: false, rawData: [], dataKey: '', growth: 0 },
             ];
 
             // Alerts logic
@@ -1309,21 +2055,32 @@
             if (topAlertsContainer) topAlertsContainer.innerHTML = alertsHtml;
 
             const cardsContainer = document.getElementById('dashboardCards');
-            cardsContainer.innerHTML = cardsData.map(c => `
-                <div onclick="drawDashChart('${c.id}', '${c.label}')" class="kpi-card" style="border-right-color: ${c.hexColor}" title="اضغط لعرض تفاصيل">
-                    <div class="kpi-card-title">
+            cardsContainer.innerHTML = cardsData.map(c => {
+                const trendClass = parseFloat(c.growth) >= 0 ? 'positive' : 'negative';
+                const trendIcon = parseFloat(c.growth) >= 0 ? '↑' : '↓';
+                return `
+                <div class="kpi-card cursor-pointer" style="border-right-color: ${c.hexColor}; position: relative; overflow: visible;" title="انقر للرسم البياني أو انقر مرتين للتفاصيل">
+                    <div style="position: absolute; top: 0; right: 0; width: 100%; height: 4px; background: linear-gradient(90deg, rgba(15,23,42,0), ${c.hexColor}, rgba(15,23,42,0));"></div>
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5;">
+                        <button onclick="openDrillDown('${c.id}', '${c.label}')" style="width: 28px; height: 28px; border-radius: 50%; background: ${c.hexColor}; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.3s ease;" title="عرض التفاصيل" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                    <div class="kpi-card-title" onclick="drawDashChart('${c.id}', '${c.label}')">
                         <span>${c.label}</span>
-                        <i class="fas ${c.icon}" style="color: ${c.hexColor}; opacity: 0.7;"></i>
+                        <i class="fas ${c.icon}" style="color: ${c.hexColor}; opacity: 0.7; transition: transform 0.3s ease;"></i>
                     </div>
-                    <div class="kpi-card-value" style="color: ${c.hexColor};">
-                        ${c.format ? c.val.toLocaleString() : c.val}
-                        ${c.unit ? '<span style="font-size: 14px; opacity: 0.8;">' + c.unit + '</span>' : ''}
+                    <div class="kpi-card-value" style="color: ${c.hexColor}; font-size: 32px; font-weight: 900; letter-spacing: -1px; cursor: pointer;" onclick="drawDashChart('${c.id}', '${c.label}')">
+                        ${c.format ? c.val.toLocaleString() : c.val}${c.unit ? ` <span style="font-size: 18px; opacity: 0.8; font-weight: 600;">${c.unit}</span>` : ''}
                     </div>
-                    ${c.growth !== 0 ? `<div class="kpi-card-growth ${parseFloat(c.growth) >= 0 ? 'positive' : 'negative'}">
-                        ${parseFloat(c.growth) >= 0 ? '▲' : '▼'} ${Math.abs(c.growth)}% vs الفترة السابقة
-                    </div>` : ''}
+                    ${c.growth !== 0 ? `<div class="trend-badge ${trendClass}">
+                        <span style="font-size: 16px;">${trendIcon}</span>
+                        <span>${Math.abs(parseFloat(c.growth))}%</span>
+                        <span style="font-size: 10px; opacity: 0.8;">vs شهر سابق</span>
+                    </div>` : '<div style="height: 24px;"></div>'}
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             // --- System Alerts Logic ---
             const alerts = [];
@@ -1395,21 +2152,40 @@
             if(systemAlertsContainer) {
                 if(alerts.length > 0) {
                     systemAlertsContainer.innerHTML = `
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fas fa-bell text-red-500 animate-pulse"></i> تنبيهات النظام (${alerts.length})</h3>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 fade-in">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2 text-lg">
+                                <i class="fas fa-bell text-red-500" style="animation: pulse 2s infinite;"></i>
+                                تنبيهات النظام <span style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${alerts.length}</span>
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                ${alerts.slice(0, 6).map(a => `
-                                    <div style="background: var(--neutral-100); border-right: 4px solid ${a.critical ? 'var(--accent)' : 'var(--warning)'}; padding: 12px; border-radius: 8px; display: flex; align-items: flex-start; gap: 12px;">
-                                        <div style="font-size: 18px; color: ${a.critical ? 'var(--accent)' : 'var(--warning)'}; flex-shrink: 0;"><i class="fas ${a.icon}"></i></div>
-                                        <p style="font-size: 12px; color: #666; margin: 0;">${a.text}</p>
-                                    </div>
-                                `).join('')}
+                                ${alerts.slice(0, 6).map((a, idx) => {
+                                    const colors = {
+                                        'rose': { bg: 'rgba(244, 63, 94, 0.1)', border: '#f43f5e', icon: '#f43f5e' },
+                                        'orange': { bg: 'rgba(245, 158, 11, 0.1)', border: '#f59e0b', icon: '#f59e0b' },
+                                        'red': { bg: 'rgba(239, 68, 68, 0.1)', border: '#ef4444', icon: '#ef4444' }
+                                    };
+                                    const colorScheme = colors[a.color] || colors.orange;
+                                    return `
+                                        <div class="alert-box" style="background: ${colorScheme.bg}; border-right: 4px solid ${colorScheme.border}; padding: 14px; border-radius: 10px; display: flex; align-items: flex-start; gap: 12px; animation-delay: ${idx * 0.1}s;">
+                                            <div style="font-size: 20px; color: ${colorScheme.icon}; flex-shrink: 0; margin-top: 2px;">
+                                                <i class="fas ${a.icon}"></i>
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <p style="font-size: 12px; color: #333; margin: 0; line-height: 1.4;">${a.text}</p>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
                             </div>
                             ${alerts.length > 6 ? `<div class="text-center mt-3"><button onclick=\"viewAllAlerts()\" class=\"text-xs bg-blue-600 text-white px-4 py-2 rounded\">عرض كل التنبيهات (${alerts.length})</button></div>` : ''}
                         </div>
                     `;
                 } else {
-                    systemAlertsContainer.innerHTML = '<div class="text-center p-4 text-slate-500"><i class="fas fa-check-circle text-emerald-500 text-2xl mb-2"></i><p>لا توجد تنبيهات حالية</p></div>';
+                    systemAlertsContainer.innerHTML = `<div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(5, 150, 105, 0.05)); border: 2px dashed #10b981; border-radius: 12px; padding: 24px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 12px; animation: bounce-soft 2s infinite;">✨</div>
+                        <p style="font-size: 16px; color: #059669; font-weight: 600; margin: 0;">لا توجد تنبيهات حالية</p>
+                        <p style="font-size: 13px; color: #10b981; margin: 8px 0 0 0;">النظام يعمل بكفاءة ممتازة</p>
+                    </div>`;
                 }
             }
 
@@ -1418,6 +2194,67 @@
 
             // Draw default chart (Sales)
             drawDashChart('sales', 'المبيعات الشهرية');
+            
+            // Trigger animations for KPI cards
+            setTimeout(() => {
+                const valueElements = document.querySelectorAll('.kpi-card-value');
+                valueElements.forEach((el, idx) => {
+                    const text = el.textContent.trim();
+                    // Extract only pure numbers
+                    const matches = text.match(/\d+/g);
+                    if (matches && matches.length > 0) {
+                        // Get the first number sequence which is usually the main value
+                        const finalValue = parseInt(matches[0]);
+                        setTimeout(() => {
+                            animateNumber(el, finalValue, 600, true);
+                        }, idx * 50);
+                    }
+                });
+            }, 100);
+        }
+
+        // Animated Number Counter
+        function animateNumber(element, finalValue, duration = 1000, format = true) {
+            if (!element) return;
+            
+            const startValue = 0;
+            const startTime = Date.now();
+            const endTime = startTime + duration;
+            
+            function update() {
+                const now = Date.now();
+                const progress = Math.min((now - startTime) / duration, 1);
+                
+                // Easing function (easeOutQuad)
+                const easeProgress = 1 - Math.pow(1 - progress, 2);
+                const currentValue = Math.floor(startValue + (finalValue - startValue) * easeProgress);
+                
+                element.textContent = format ? currentValue.toLocaleString('ar-EG') : currentValue;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            update();
+        }
+
+        // Enhanced Dashboard Update with Animations
+        function updateDashboardWithAnimations() {
+            updateDashboard();
+            
+            // Animate all KPI values
+            setTimeout(() => {
+                const valueElements = document.querySelectorAll('.kpi-card-value');
+                valueElements.forEach((el) => {
+                    const text = el.textContent.trim();
+                    const numbers = text.match(/\d+/g);
+                    if (numbers && numbers.length > 0) {
+                        const finalValue = parseInt(numbers.join(''));
+                        animateNumber(el, finalValue, 800, true);
+                    }
+                });
+            }, 100);
         }
 
         function drawDashChart(cardId, label) {
@@ -1427,7 +2264,16 @@
             
             const color = cardData.hexColor;
             const chartTitle = document.getElementById('dashChartTitle');
-            if (chartTitle) chartTitle.innerHTML = `<i class="fas fa-chart-line" style="color: ${color};"></i> ${label}`;
+            if (chartTitle) {
+                chartTitle.innerHTML = `<i class="fas fa-chart-line" style="color: ${color};"></i> ${label}`;
+                // إضافة خيارات التجميع (اليومي/الشهري)
+                if (cardId === 'sales') {
+                    chartTitle.innerHTML += `<div style="font-size: 11px; margin-left: 20px; color: #666; font-weight: normal;">
+                        <label style="margin-left: 20px;"><input type="radio" name="chartGrouping" value="daily" onchange="drawDashChart('sales', '${label}')"> يومي</label>
+                        <label style="margin-left: 20px;"><input type="radio" name="chartGrouping" value="monthly" checked onchange="drawDashChart('sales', '${label}')"> شهري</label>
+                    </div>`;
+                }
+            }
             
             // Show category selector for sales data
             const categorySelector = document.getElementById('dashCategorySelector');
@@ -1445,26 +2291,51 @@
             // Prepare chart data based on card type
             let labels = [], data = [];
             const currentCategory = window.currentChartCategory || 'all';
+            const grouping = document.querySelector('input[name="chartGrouping"]:checked')?.value || 'monthly';
 
             if (cardId === 'sales') {
-                // Group sales by month and optional category
-                const monthlyData = {};
-                const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-                months.forEach(m => monthlyData[m] = 0);
+                // Group sales by selected period (daily or monthly)
+                const groupedData = {};
+                
+                if (grouping === 'daily') {
+                    // Daily grouping
+                    const dateMap = {};
+                    if (cardData.rawData && cardData.rawData.length > 0) {
+                        cardData.rawData.forEach(item => {
+                            const itemCategory = item.category || 'cv';
+                            
+                            if (currentCategory === 'all' || currentCategory === itemCategory) {
+                                const dateKey = item.date; // YYYY-MM-DD format
+                                if (!dateMap[dateKey]) dateMap[dateKey] = 0;
+                                dateMap[dateKey] += parseFloat(item.total || 0);
+                            }
+                        });
+                    }
+                    
+                    // Sort by date
+                    const sortedDates = Object.keys(dateMap).sort();
+                    labels = sortedDates;
+                    data = sortedDates.map(date => dateMap[date]);
+                } else {
+                    // Monthly grouping (default)
+                    const monthlyData = {};
+                    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                    months.forEach(m => monthlyData[m] = 0);
 
-                if (cardData.rawData && cardData.rawData.length > 0) {
-                    cardData.rawData.forEach(item => {
-                        const date = new Date(item.date);
-                        const month = months[date.getMonth()];
-                        const itemCategory = item.category || 'cv'; // Default to cardiovascular
-                        
-                        if (currentCategory === 'all' || currentCategory === itemCategory) {
-                            monthlyData[month] += parseFloat(item.total || 0);
-                        }
-                    });
+                    if (cardData.rawData && cardData.rawData.length > 0) {
+                        cardData.rawData.forEach(item => {
+                            const date = new Date(item.date);
+                            const month = months[date.getMonth()];
+                            const itemCategory = item.category || 'cv';
+                            
+                            if (currentCategory === 'all' || currentCategory === itemCategory) {
+                                monthlyData[month] += parseFloat(item.total || 0);
+                            }
+                        });
+                    }
+                    labels = months;
+                    data = months.map(m => monthlyData[m]);
                 }
-                labels = months;
-                data = months.map(m => monthlyData[m]);
             } else if (cardData.rawData && cardData.rawData.length > 0) {
                 // Group by date for other card types
                 const groupedByDate = {};
@@ -1477,7 +2348,7 @@
                 labels = Object.keys(groupedByDate).sort();
                 data = labels.map(d => groupedByDate[d]);
             } else {
-                // No data available, show placeholder
+                // No data available
                 labels = ['لا توجد بيانات'];
                 data = [0];
             }
@@ -1503,14 +2374,34 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 800,
+                        easing: 'easeInOutQuart',
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default') {
+                                delay = context.dataIndex * 50 + context.datasetIndex * 100;
+                            }
+                            return delay;
+                        }
+                    },
                     plugins: {
                         legend: { display: false },
+                        datalabels: {
+                            display: true,
+                            color: color,
+                            anchor: 'end',
+                            align: 'top',
+                            font: { size: 11, weight: 'bold' }
+                        },
                         tooltip: {
                             enabled: true,
                             backgroundColor: 'rgba(0,0,0,0.8)',
                             padding: 12,
                             titleFont: { size: 13 },
                             bodyFont: { size: 12 },
+                            borderColor: color,
+                            borderWidth: 2,
                             callbacks: {
                                 label: function(context) {
                                     return context.parsed.y.toLocaleString('ar-EG');
@@ -1529,7 +2420,28 @@
                             grid: { display: false }
                         }
                     }
-                }
+                },
+                plugins: [{
+                    id: 'datalabels',
+                    afterDatasetsDraw(chart) {
+                        const { ctx } = chart;
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+                            const meta = chart.getDatasetMeta(datasetIndex);
+                            meta.data.forEach((element, index) => {
+                                const data = dataset.data[index];
+                                if (data > 0) {
+                                    const x = element.x;
+                                    const y = element.y;
+                                    ctx.fillStyle = color;
+                                    ctx.font = 'bold 11px Cairo';
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'bottom';
+                                    ctx.fillText(data.toLocaleString('ar-EG'), x, y - 5);
+                                }
+                            });
+                        });
+                    }
+                }]
             });
         }
 
@@ -1845,9 +2757,9 @@
                 <tr class="font-black text-lg border-t-2 border-slate-400 bg-slate-100 hover:bg-blue-50/20 transition group border-b border-slate-100 text-center">
                     <td class="p-2 border border-slate-300 font-mono col-no">-</td>
                     <td class="p-2 border border-slate-300 font-mono col-date">-</td>
-                    <td class="p-2 border border-slate-300 text-right font-bold text-blue-700 col-customer">إجمالي الفواتير والمبالغ المسددة (غير المدرجة بمطالبات)</td>
+                    <td class="p-2 border border-slate-300 text-right font-bold text-blue-700 col-customer">-</td>
                     <td class="p-2 border border-slate-300 text-right col-rep">-</td>
-                    <td class="p-2 border border-slate-300 text-right col-area">-</td>
+                    <td class="p-2 border border-slate-300 text-right col-area">الإجمالي</td>
                     <td class="p-2 border border-slate-300 font-bold col-val text-blue-700">${totalSales.toLocaleString()}</td>
                     <td class="p-2 border border-slate-300 text-orange-600 col-val font-bold">${totalRet.toLocaleString()}</td>
                     <td class="p-2 border border-slate-300 text-emerald-600 col-val font-bold">${totalPay.toLocaleString()}</td>
@@ -2075,7 +2987,7 @@
                 <tr class="font-black text-lg border-t-2 border-slate-400 bg-slate-100 hover:bg-blue-50/20 transition border-b border-slate-100 text-center">
                     <td class="p-2 border border-slate-300 col-date">-</td>
                     <td class="p-2 border border-slate-300 text-right col-details font-bold">-</td>
-                    <td class="p-2 border border-slate-300 text-right text-blue-700 font-bold col-customer">إجمالي المطالبات</td>
+                    <td class="p-2 border border-slate-300 text-right text-blue-700 font-bold col-customer">الإجمالي</td>
                     <td class="p-2 border border-slate-300 text-right col-area">-</td>
                     <td class="p-2 border border-slate-300 font-bold col-val text-blue-700">${data.reduce((sum, c) => sum + parseFloat(c.amount || 0), 0).toLocaleString()}</td>
                     <td class="p-2 border border-slate-300 text-emerald-600 font-bold col-val">${data.reduce((sum, c) => sum + parseFloat(c.paidAmt || 0), 0).toLocaleString()}</td>
@@ -2401,7 +3313,7 @@
                 const totalIndex = config[type].findIndex(c => ['total', 'amount'].includes(c.k));
                 const allCells = config[type].map((col, idx) => {
                     if (idx < totalIndex) {
-                        return `<td class="px-2 py-1 border border-slate-300 text-right">${idx === 0 ? 'الإجمالي المجمع' : '-'}</td>`;
+                        return idx === totalIndex - 1 ? `<td class="px-2 py-1 border border-slate-300 text-right font-black">الإجمالي</td>` : `<td class="px-2 py-1 border border-slate-300 text-right">-</td>`;
                     } else if (idx === totalIndex) {
                         return `<td class="px-2 py-1 text-center text-lg border border-slate-300 font-bold">${sumValue.toLocaleString()}</td>`;
                     } else {
@@ -3424,7 +4336,45 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 print:hidden">
+                        <div class="bg-slate-900 text-white p-4 rounded-xl text-center">
+                            <span class="text-xs opacity-80 block mb-1">إجمالي المدين</span>
+                            <span class="text-2xl font-black text-blue-400">${(periodSales).toLocaleString()}</span>
+                        </div>
+                        <div class="bg-slate-900 text-white p-4 rounded-xl text-center">
+                            <span class="text-xs opacity-80 block mb-1">إجمالي الدائن</span>
+                            <span class="text-2xl font-black text-orange-400">${(periodReturn + periodPayments).toLocaleString()}</span>
+                        </div>
+                        <div class="bg-slate-900 text-white p-4 rounded-xl text-center border-2 border-red-500">
+                            <span class="text-xs opacity-80 block mb-1">صافي المديونية</span>
+                            <span class="text-2xl font-black text-red-400">${finalBal.toLocaleString()}</span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto mt-4 mb-6">
+                        <h4 class="font-bold text-slate-800 mb-3">جدول ملخص المعاملات</h4>
+                        <table class="w-full text-sm text-right border-collapse print-table bg-white">
+                            <thead class="bg-slate-900 text-white font-bold">
+                                <tr>
+                                    <th class="p-2 border border-slate-700">المبيعات</th>
+                                    <th class="p-2 border border-slate-700">المرتجعات</th>
+                                    <th class="p-2 border border-slate-700">التحصيل</th>
+                                    <th class="p-2 border border-slate-700">صافي المديونية</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-blue-50 text-center">
+                                    <td class="p-3 border border-slate-300 font-bold text-blue-900">${periodSales.toLocaleString()}</td>
+                                    <td class="p-3 border border-slate-300 font-bold text-orange-900">${periodReturn.toLocaleString()}</td>
+                                    <td class="p-3 border border-slate-300 font-bold text-emerald-900">${periodPayments.toLocaleString()}</td>
+                                    <td class="p-3 border border-slate-300 font-bold text-red-900">${finalBal.toLocaleString()}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm mt-4">
+                        <h4 class="font-bold text-slate-800 mb-3 p-4 pb-0">القيد اليومي للحركات</h4>
                         <table class="w-full text-sm text-right border-collapse print-table" id="statementTable">
                             <thead class="bg-slate-900 text-white font-bold">
                                 <tr>
@@ -3838,13 +4788,36 @@
             XLSX.writeFile(wb, `PharmaOne_${type}.xlsx`);
         }
 
-        function showToast(msg) {
+        function showToast(msg, type = 'success') {
             const t = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
+            const icon = document.querySelector('#toast i');
+            const msgEl = document.getElementById('toastMsg');
+            
+            msgEl.innerText = msg;
+            
+            // Remove all type classes
+            t.classList.remove('success', 'error', 'warning');
+            icon.className = 'fas';
+            
+            // Apply type-specific styling
+            if (type === 'error') {
+                t.classList.add('error');
+                icon.classList.add('fa-exclamation-circle', 'text-red-400');
+            } else if (type === 'warning') {
+                t.classList.add('warning');
+                icon.classList.add('fa-exclamation-triangle', 'text-yellow-400');
+            } else {
+                t.classList.add('success');
+                icon.classList.add('fa-check-circle', 'text-green-400');
+            }
+            
+            // Animate in
             t.classList.remove('translate-y-20', 'opacity-0');
+            
+            // Animate out after 3.5 seconds
             setTimeout(() => {
                 if (t) t.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            }, 3500);
         }
 
         // Customer Quick Menu Logic
@@ -3987,76 +4960,81 @@
 
         // --- 7. Modal System & Forms Logic ---
         function openModal(type, index = null, prefill = null) {
-            const isEdit = index !== null;
-            const item = isEdit ? db[type][index] : (prefill || {});
-            const container = document.getElementById('modalContainer');
+            try {
+                const isEdit = index !== null;
+                const item = isEdit ? db[type][index] : (prefill || {});
+                const container = document.getElementById('modalContainer');
+                
+                if (!container) {
+                    alert('❌ خطأ تقني: لم يتم العثور على صندوق النموذج. حاول تحديث الصفحة.');
+                    console.error('Modal container not found in DOM');
+                    return;
+                }
 
-            let fieldsHtml = '';
-            
-            // Define custom Layouts & Ordering
-            if (type === 'customers') {
-                fieldsHtml = buildFormFields([
-                    { k: 'no', l: 'كود العميل (اختياري)', t: 'text', val: item.no },
-                    { k: 'name', l: 'اسم العميل الكامل', t: 'text', val: item.name },
-                    { k: 'rep', l: 'المندوب', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep },
-                    { k: 'area', l: 'المنطقة', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area },
-                    { k: 'paymentMethod', l: 'طريقة السداد', t: 'datalist', list: 'pmDatalist', options: db.paymentMethods.map(p=>p.name), val: item.paymentMethod },
-                    { k: 'notes', l: 'ملاحظات', t: 'textarea', val: item.notes },
-                    { k: 'image', l: 'إرفاق صورة', t: 'file', val: '' }
-                ]);
-            } else if (type === 'sales') {
-                fieldsHtml = buildFormFields([
-                    { k: 'date', l: 'التاريخ', t: 'date', val: item.date || '' },
-                    { k: 'invoiceNo', l: 'رقم الفاتورة', t: 'text', val: item.invoiceNo },
-                    { k: 'customerName', l: 'اسم العميل', t: 'datalist', list: 'custDatalist', options: db.customers.map(c=>c.name), val: item.customerName, extra: 'onchange="autoFillFromCustomer(this.value)"' },
-                    { k: 'total', l: 'القيمة الإجمالية', t: 'number', val: item.total },
-                    { k: 'paid', l: 'المبلغ المسدد الآن (اختياري)', t: 'number', val: item.paid || 0 },
-                    { k: 'notes', l: 'ملاحظات', t: 'textarea', val: item.notes },
-                    { k: 'rep', l: 'المندوب (تلقائي)', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep },
-                    { k: 'area', l: 'المنطقة (تلقائي)', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area },
-                    { k: 'paymentMethod', l: 'طريقة السداد (تلقائي)', t: 'datalist', list: 'pmDatalist', options: db.paymentMethods.map(p=>p.name), val: item.paymentMethod },
-                    { k: 'image', l: 'إرفاق صورة', t: 'file', val: '' }
-                ]);
-            } else if (type === 'returns') {
-                fieldsHtml = buildFormFields([
-                    { k: 'date', l: 'التاريخ', t: 'date', val: item.date || '' },
-                    { k: 'customerName', l: 'اسم العميل', t: 'datalist', list: 'custDatalist', options: db.customers.map(c=>c.name), val: item.customerName, extra: 'onchange="autoFillFromCustomer(this.value); populateCustomerInvoices(this.value);"' },
-                    { k: 'invoiceRef', l: 'رقم الفاتورة (المرتجع منها)', t: 'select', options: [], val: item.invoiceRef, id: 'field_invoiceRef', extra: 'onchange="document.getElementById(\'field_notes\').value = \'مرتجع من فاتورة رقم \' + this.value"' },
-                    { k: 'amount', l: 'قيمة المرتجع', t: 'number', val: item.amount },
-                    { k: 'notes', l: 'البيان', t: 'textarea', val: item.notes, id: 'field_notes' },
-                    { k: 'returnNotes', l: 'ملاحظات إضافية', t: 'textarea', val: item.returnNotes || '' },
-                    { k: 'rep', l: 'المندوب (تلقائي)', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep },
-                    { k: 'area', l: 'المنطقة (تلقائي)', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area },
-                    { k: 'image', l: 'إرفاق صورة', t: 'file', val: '' }
-                ]);
-            } else if (type === 'payments') {
-                fieldsHtml = buildFormFields([
-                    { k: 'date', l: 'التاريخ', t: 'date', val: item.date || '' },
-                    { k: 'customerName', l: 'اسم العميل', t: 'datalist', list: 'custDatalist', options: db.customers.map(c=>c.name), val: item.customerName, extra: 'onchange="autoFillFromCustomer(this.value); populateCustomerPaymentOptions(this.value);"' },
-                    { k: 'paymentRef', l: 'بيان السداد (الفواتير أو المطالبات)', t: 'select', options: ['دفعة من الحساب'], val: item.paymentRef || 'دفعة من الحساب', id: 'field_paymentRef', extra: 'onchange="autoFillPaymentNotes(this)"' },
-                    { k: 'amount', l: 'المبلغ المحصل', t: 'number', val: item.amount, id: 'field_amount' },
-                    { k: 'no', l: 'البيان (تفاصيل التحصيل القطعية)', t: 'text', val: item.no, id: 'field_no' },
-                    { k: 'notes', l: 'ملاحظات إضافية', t: 'textarea', val: item.notes },
-                    { k: 'rep', l: 'المندوب (تلقائي)', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep },
-                    { k: 'area', l: 'المنطقة (تلقائي)', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area },
-                    { k: 'image', l: 'إرفاق صورة', t: 'file', val: '' }
-                ]);
-            } else if (type === 'hr') {
-                fieldsHtml = buildFormFields([
-                    { k: 'code', l: 'كود المندوب', t: 'text', val: item.code },
-                    { k: 'name', l: 'اسم المندوب', t: 'text', val: item.name },
-                    { k: 'area', l: 'المنطقة المسؤول عنها', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area },
-                    { k: 'basic', l: 'الراتب الأساسي', t: 'number', val: item.basic },
-                    { k: 'commissionRate', l: 'العمولة %', t: 'number', val: item.commissionRate }
-                ]);
+                const todayDate = new Date().toISOString().split('T')[0];
+                let fieldsHtml = '';
+                
+                // Define custom Layouts & Ordering
+                if (type === 'customers') {
+                    fieldsHtml = buildFormFields([
+                        { k: 'no', l: 'كود العميل (اختياري)', t: 'text', val: item.no || '' },
+                        { k: 'name', l: 'اسم العميل الكامل *', t: 'text', val: item.name || '', extra: 'required' },
+                        { k: 'rep', l: 'المندوب', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep || '' },
+                        { k: 'area', l: 'المنطقة', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area || '' },
+                        { k: 'paymentMethod', l: 'طريقة السداد', t: 'datalist', list: 'pmDatalist', options: db.paymentMethods.map(p=>p.name), val: item.paymentMethod || '' },
+                        { k: 'notes', l: 'ملاحظات', t: 'textarea', val: item.notes || '' }
+                    ]);
+                } else if (type === 'sales') {
+                    fieldsHtml = buildFormFields([
+                        { k: 'date', l: 'التاريخ', t: 'date', val: item.date || todayDate },
+                        { k: 'invoiceNo', l: 'رقم الفاتورة *', t: 'text', val: item.invoiceNo || '', extra: 'required', placeholder: 'مثال: INV-001' },
+                        { k: 'customerName', l: 'اسم العميل *', t: 'datalist', list: 'custDatalist', options: db.customers.map(c=>c.name), val: item.customerName || '', extra: 'onchange="autoFillFromCustomer(this.value)" required' },
+                        { k: 'total', l: 'القيمة الإجمالية *', t: 'number', val: item.total || '', extra: 'required step="0.01"' },
+                        { k: 'paid', l: 'المبلغ المسدد الآن (اختياري)', t: 'number', val: item.paid || 0, extra: 'step="0.01"' },
+                        { k: 'notes', l: 'ملاحظات', t: 'textarea', val: item.notes || '' },
+                        { k: 'rep', l: 'المندوب (تلقائي)', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep || '' },
+                        { k: 'area', l: 'المنطقة (تلقائي)', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area || '' },
+                        { k: 'paymentMethod', l: 'طريقة السداد (تلقائي)', t: 'datalist', list: 'pmDatalist', options: db.paymentMethods.map(p=>p.name), val: item.paymentMethod || '' }
+                    ]);
+                } else if (type === 'returns') {
+                    fieldsHtml = buildFormFields([
+                        { k: 'date', l: 'التاريخ', t: 'date', val: item.date || todayDate },
+                        { k: 'customerName', l: 'اسم العميل *', t: 'datalist', list: 'custDatalist', options: db.customers.map(c=>c.name), val: item.customerName || '', extra: 'onchange="autoFillFromCustomer(this.value); populateCustomerInvoices(this.value);" required' },
+                        { k: 'invoiceRef', l: 'رقم الفاتورة (المرتجع منها)', t: 'select', options: [], val: item.invoiceRef || '', id: 'field_invoiceRef' },
+                        { k: 'amount', l: 'قيمة المرتجع *', t: 'number', val: item.amount || '', extra: 'required step="0.01"' },
+                        { k: 'notes', l: 'البيان', t: 'textarea', val: item.notes || '', id: 'field_notes' },
+                        { k: 'returnNotes', l: 'ملاحظات إضافية', t: 'textarea', val: item.returnNotes || '' },
+                        { k: 'rep', l: 'المندوب (تلقائي)', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep || '' },
+                        { k: 'area', l: 'المنطقة (تلقائي)', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area || '' }
+                    ]);
+                } else if (type === 'payments') {
+                    fieldsHtml = buildFormFields([
+                        { k: 'date', l: 'التاريخ', t: 'date', val: item.date || todayDate },
+                        { k: 'customerName', l: 'اسم العميل *', t: 'datalist', list: 'custDatalist', options: db.customers.map(c=>c.name), val: item.customerName || '', extra: 'onchange="autoFillFromCustomer(this.value); populateCustomerPaymentOptions(this.value);" required' },
+                        { k: 'paymentRef', l: 'بيان السداد (الفواتير أو المطالبات)', t: 'select', options: ['دفعة من الحساب'], val: item.paymentRef || 'دفعة من الحساب', id: 'field_paymentRef' },
+                        { k: 'amount', l: 'المبلغ المحصل *', t: 'number', val: item.amount || '', id: 'field_amount', extra: 'required step="0.01"' },
+                        { k: 'no', l: 'البيان (تفاصيل التحصيل القطعية)', t: 'text', val: item.no || '', id: 'field_no', placeholder: 'مثال: سند رقم 001' },
+                        { k: 'notes', l: 'ملاحظات إضافية', t: 'textarea', val: item.notes || '' },
+                        { k: 'rep', l: 'المندوب (تلقائي)', t: 'datalist', list: 'repsDatalist', options: db.hr.map(h=>h.name), val: item.rep || '' },
+                        { k: 'area', l: 'المنطقة (تلقائي)', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area || '' },
+                        { k: 'paymentMethod', l: 'طريقة السداد', t: 'select', options: ['نقدي', 'شيك', 'تحويل بنكي'], val: item.paymentMethod || 'نقدي' }
+                    ]);
+                } else if (type === 'hr') {
+                    fieldsHtml = buildFormFields([
+                        { k: 'code', l: 'كود المندوب *', t: 'text', val: item.code || '', extra: 'required' },
+                        { k: 'name', l: 'اسم المندوب *', t: 'text', val: item.name || '', extra: 'required' },
+                        { k: 'area', l: 'المنطقة المسؤول عنها', t: 'datalist', list: 'areasDatalist', options: db.areas.map(a=>a.name), val: item.area || '' },
+                        { k: 'basic', l: 'الراتب الأساسي', t: 'number', val: item.basic || 0, extra: 'step="0.01"' },
+                        { k: 'commissionRate', l: 'العمولة %', t: 'number', val: item.commissionRate || 0, extra: 'min="0" max="100"' }
+                    ]);
             } else {
                 // Generic fallback for others (PaymentMethods, Areas, etc.)
                 const layouts = {
-                    'areas': [{k:'id',l:'الكود',t:'text'},{k:'name',l:'الاسم',t:'text'}],
-                    'paymentMethods': [{k:'id',l:'الكود',t:'text'},{k:'name',l:'طريقة السداد',t:'text'}, {k:'gracePeriod',l:'فترة السماح (أيام)',t:'number'}]
+                    'areas': [{k:'id',l:'الكود',t:'text'},{k:'name',l:'الاسم',t:'text', extra:'required'}],
+                    'paymentMethods': [{k:'id',l:'الكود',t:'text'},{k:'name',l:'طريقة السداد',t:'text', extra:'required'}, {k:'gracePeriod',l:'فترة السماح (أيام)',t:'number'}]
                 };
                 const layout = layouts[type] || [];
-                fieldsHtml = buildFormFields(layout.map(f => ({...f, val: item[f.k]})));
+                fieldsHtml = buildFormFields(layout.map(f => ({...f, val: item[f.k] || ''})));
             }
 
             container.innerHTML = `
@@ -4067,13 +5045,13 @@
                             <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
                         </div>
                         <div class="p-6 max-h-[70vh] overflow-y-auto">
-                            <form id="modalForm">
+                            <form id="modalForm" onsubmit="return false;">
                                 ${fieldsHtml}
                             </form>
                         </div>
                         <div class="bg-slate-50 px-6 py-4 border-t flex justify-end gap-3">
                             <button onclick="closeModal()" class="px-6 py-2 rounded-lg text-slate-600 hover:bg-slate-200 transition">إلغاء</button>
-                            <button onclick="saveItem('${type}', ${index})" class="px-8 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold transition shadow-lg">حفظ البيانات</button>
+                            <button onclick="saveItem('${type}', ${index})" class="px-8 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold transition shadow-lg">💾 حفظ البيانات</button>
                         </div>
                     </div>
                 </div>
@@ -4083,6 +5061,11 @@
             if (isEdit && item.customerName) {
                 if (type === 'returns') setTimeout(() => { populateCustomerInvoices(item.customerName); document.getElementById('field_invoiceRef').value = item.invoiceRef; }, 100);
                 if (type === 'payments') setTimeout(() => { populateCustomerPaymentOptions(item.customerName); document.getElementById('field_paymentRef').value = item.paymentRef || 'دفعة من الحساب'; }, 100);
+            }
+            } catch (err) {
+                console.error('خطأ في فتح النموذج:', err);
+                console.error('Stack:', err.stack);
+                alert('❌ خطأ تقني: ' + err.message);
             }
         }
 
@@ -4299,21 +5282,44 @@
         }
 
         function saveItem(type, index) {
-            const isEdit = index !== null;
-            const newItem = {};
-            // Gather text/number/date fields and textareas
-            const fields = document.querySelectorAll('#modalForm input:not([type="file"]), #modalForm select, #modalForm textarea');
+            try {
+                const isEdit = index !== null;
+                const newItem = {};
+                // Gather text/number/date fields and textareas
+                const modalForm = document.getElementById('modalForm');
+                if (!modalForm) {
+                    alert('❌ خطأ: نموذج الإدخال غير موجود. حاول الضغط على الزر مرة أخرى.');
+                    console.error('Modal form not found');
+                    return;
+                }
+                
+                const fields = modalForm.querySelectorAll('input:not([type="file"]), select, textarea');
+                if (fields.length === 0) {
+                    alert('❌ خطأ: لم يتم العثور على حقول النموذج. تأكد من تحديث الصفحة.');
+                    console.error('No form fields found');
+                    return;
+                }
 
-            fields.forEach(field => {
-                const key = field.id.replace('field_', '');
-                let val = field.value;
-                if (field.type === 'number') val = parseFloat(val) || 0;
-                newItem[key] = val;
-            });
-            
-            // إضافة توقيت الإنشاء لترتيب أدق
-            if (!isEdit) newItem.createdAt = Date.now();
-            else if (db[type][index] && db[type][index].createdAt) newItem.createdAt = db[type][index].createdAt;
+                fields.forEach(field => {
+                    const key = field.id.replace('field_', '');
+                    let val = field.value;
+                    if (field.type === 'number') val = parseFloat(val) || 0;
+                    newItem[key] = val;
+                });
+                
+                // Validation
+                if ((['sales','returns','payments','customers'].includes(type)) && !newItem.customerName) {
+                    alert('❌ اسم العميل مطلوب!');
+                    return;
+                }
+                if (['sales'].includes(type) && !newItem.total) {
+                    alert('القيمة الإجمالية مطلوبة!');
+                    return;
+                }
+                
+                // إضافة توقيت الإنشاء لترتيب أدق
+                if (!isEdit) newItem.createdAt = Date.now();
+                else if (db[type][index] && db[type][index].createdAt) newItem.createdAt = db[type][index].createdAt;
             
             // Handle Image storage
             if (window.lastUploadedFile) {
@@ -4370,7 +5376,14 @@
 
             saveData();
             closeModal();
-            showToast('تم حفظ البيانات بنجاح');
+            showToast('✅ تم حفظ البيانات بنجاح بنجاح!', 'success');
+            
+            // Add page animation effect
+            const contentArea = document.getElementById('contentArea');
+            if (contentArea) {
+                contentArea.style.animation = 'pulse 0.6s ease-out';
+                setTimeout(() => { contentArea.style.animation = ''; }, 600);
+            }
             
             // Re-render correct view
             if (['sales', 'returns', 'payments'].includes(type)) {
@@ -4385,6 +5398,12 @@
                 renderHRView(document.getElementById('contentArea'));
             } else {
                 navigateTo(type);
+            }
+            updateDashboard();
+            } catch (err) {
+                console.error('خطأ في saveItem:', err);
+                console.error('Stack:', err.stack);
+                showToast('❌ خطأ في حفظ البيانات: ' + err.message, 'error');
             }
         }
 
@@ -4520,6 +5539,275 @@
                 setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
             }
         }
+
+        // ========== FAB (Floating Action Button) Functions ==========
+        function toggleFABMenu() {
+            const fabMain = document.getElementById('fabMain');
+            const fabSubmenu = document.getElementById('fabSubmenu');
+            
+            fabMain.classList.toggle('active');
+            fabSubmenu.classList.toggle('active');
+        }
+
+        function closeFABMenu() {
+            const fabMain = document.getElementById('fabMain');
+            const fabSubmenu = document.getElementById('fabSubmenu');
+            
+            fabMain.classList.remove('active');
+            fabSubmenu.classList.remove('active');
+        }
+
+        // Close FAB when clicking outside
+        document.addEventListener('click', function(e) {
+            const fabContainer = document.getElementById('fabContainer');
+            if (!fabContainer.contains(e.target)) {
+                closeFABMenu();
+            }
+        });
+
+        // ========== Drill-Down Functions ==========
+        function openDrillDown(cardId, cardLabel) {
+            const modal = document.getElementById('drillDownModal');
+            const title = document.getElementById('drillDownTitle');
+            const content = document.getElementById('drillDownContent');
+            
+            title.innerText = `تفاصيل: ${cardLabel}`;
+            
+            // Generate drill-down data based on card type
+            let items = [];
+            
+            if (cardId === 'sales') {
+                items = generateSalesDrillDown();
+            } else if (cardId === 'returns') {
+                items = generateReturnsDrillDown();
+            } else if (cardId === 'collections') {
+                items = generateCollectionsDrillDown();
+            } else if (cardId === 'customers') {
+                items = generateCustomersDrillDown();
+            } else if (cardId === 'reps') {
+                items = generateRepsDrillDown();
+            }
+            
+            content.innerHTML = items.map(item => `
+                <div class="drill-down-item">
+                    <div class="drill-down-item-title">${item.name}</div>
+                    <div class="drill-down-item-value">${item.value}</div>
+                    ${item.detail ? `<div style="font-size: 12px; color: #999; margin-top: 4px;">${item.detail}</div>` : ''}
+                </div>
+            `).join('');
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeDrillDown() {
+            const modal = document.getElementById('drillDownModal');
+            modal.style.display = 'none';
+        }
+
+        function generateSalesDrillDown() {
+            const topCustomers = {};
+            db.sales.forEach(s => {
+                topCustomers[s.customerName] = (topCustomers[s.customerName] || 0) + parseFloat(s.total || 0);
+            });
+            
+            return Object.entries(topCustomers)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 12)
+                .map(([name, value]) => ({
+                    name: name,
+                    value: value.toLocaleString('ar-EG'),
+                    detail: `عدد الفواتير: ${db.sales.filter(s => s.customerName === name).length}`
+                }));
+        }
+
+        function generateReturnsDrillDown() {
+            const topReturns = {};
+            db.returns.forEach(r => {
+                topReturns[r.customerName] = (topReturns[r.customerName] || 0) + parseFloat(r.amount || 0);
+            });
+            
+            return Object.entries(topReturns)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 12)
+                .map(([name, value]) => ({
+                    name: name,
+                    value: value.toLocaleString('ar-EG'),
+                    detail: `عدد المرتجعات: ${db.returns.filter(r => r.customerName === name).length}`
+                }));
+        }
+
+        function generateCollectionsDrillDown() {
+            const topCollections = {};
+            db.payments.forEach(p => {
+                topCollections[p.customerName] = (topCollections[p.customerName] || 0) + parseFloat(p.amount || 0);
+            });
+            
+            return Object.entries(topCollections)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 12)
+                .map(([name, value]) => ({
+                    name: name,
+                    value: value.toLocaleString('ar-EG'),
+                    detail: `عدد التحصيلات: ${db.payments.filter(p => p.customerName === name).length}`
+                }));
+        }
+
+        function generateCustomersDrillDown() {
+            const customersByRep = {};
+            db.customers.forEach(c => {
+                const rep = c.rep || 'بدون مندوب';
+                customersByRep[rep] = (customersByRep[rep] || 0) + 1;
+            });
+            
+            return Object.entries(customersByRep)
+                .sort((a, b) => b[1] - a[1])
+                .map(([rep, count]) => ({
+                    name: rep,
+                    value: count,
+                    detail: 'عميل'
+                }));
+        }
+
+        function generateRepsDrillDown() {
+            return db.hr.map(rep => {
+                const repCusts = db.customers.filter(c => c.rep === rep.name).length;
+                const repSales = db.sales.filter(s => s.rep === rep.name).reduce((a, b) => a + parseFloat(b.total || 0), 0);
+                return {
+                    name: rep.name,
+                    value: repSales.toLocaleString('ar-EG'),
+                    detail: `${repCusts} عميل`
+                };
+            });
+        }
+
+        // ========== Carousel Functions ==========
+        function initCarousel(containerId, slides) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="carousel-track" style="transform: translateX(0%);">
+                    ${slides.map((slide, idx) => `
+                        <div class="carousel-slide" style="background: linear-gradient(135deg, ${slide.color1} 0%, ${slide.color2} 100%);">
+                            <div class="carousel-slide-title">${slide.title}</div>
+                            <div class="carousel-slide-value">${slide.value}</div>
+                            <div class="carousel-slide-meta">${slide.meta}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="carousel-controls">
+                    ${slides.map((_, idx) => `
+                        <button class="carousel-dot ${idx === 0 ? 'active' : ''}" onclick="switchCarouselSlide('${containerId}', ${idx})" data-slide="${idx}"></button>
+                    `).join('')}
+                </div>
+                <button class="carousel-nav prev" onclick="prevCarouselSlide('${containerId}')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="carousel-nav next" onclick="nextCarouselSlide('${containerId}')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+        }
+
+        function switchCarouselSlide(containerId, slideIndex) {
+            const container = document.getElementById(containerId);
+            const track = container.querySelector('.carousel-track');
+            const dots = container.querySelectorAll('.carousel-dot');
+            
+            track.style.transform = `translateX(-${slideIndex * 100}%)`;
+            
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === slideIndex);
+            });
+            
+            currentCarouselIndex = slideIndex;
+        }
+
+        function nextCarouselSlide(containerId) {
+            const container = document.getElementById(containerId);
+            const slides = container.querySelectorAll('.carousel-slide');
+            const totalSlides = slides.length;
+            let nextIndex = (currentCarouselIndex + 1) % totalSlides;
+            switchCarouselSlide(containerId, nextIndex);
+        }
+
+        function prevCarouselSlide(containerId) {
+            const container = document.getElementById(containerId);
+            const slides = container.querySelectorAll('.carousel-slide');
+            const totalSlides = slides.length;
+            let prevIndex = (currentCarouselIndex - 1 + totalSlides) % totalSlides;
+            switchCarouselSlide(containerId, prevIndex);
+        }
+
+        // Auto-rotate carousel every 5 seconds
+        function startCarouselAutoPlay(containerId, interval = 5000) {
+            setInterval(() => {
+                nextCarouselSlide(containerId);
+            }, interval);
+        }
+
+        // ========== Real-time Sync Indicator ==========
+        function showSyncIndicator(element, isComplete = false) {
+            if (!element) return;
+            
+            let indicator = element.querySelector('.sync-indicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.className = 'sync-indicator';
+                element.style.position = 'relative';
+                element.appendChild(indicator);
+            }
+            
+            if (isComplete) {
+                indicator.classList.remove('syncing');
+                indicator.style.background = '#10b981';
+                setTimeout(() => {
+                    indicator.style.animation = 'none';
+                }, 1000);
+            } else {
+                indicator.classList.add('syncing');
+                indicator.style.background = '#f59e0b';
+            }
+        }
+
+        // Simulate real-time data sync
+        function simulateDataSync() {
+            const card = document.querySelector('.kpi-card');
+            if (card) {
+                showSyncIndicator(card, false);
+                
+                setTimeout(() => {
+                    updateDashboard();
+                    showSyncIndicator(card, true);
+                    showToast('تم تحديث البيانات بنجاح ✓', 'success');
+                }, 2000);
+            }
+        }
+
+        // Initialize carousel on dashboard load
+        let carouselInitialized = false;
+        const originalUpdateDashboard = window.updateDashboard;
+        window.updateDashboard = function() {
+            originalUpdateDashboard.call(this);
+            
+            // Initialize carousel with KPI data after dashboard update
+            if (!carouselInitialized && window.dashRawData) {
+                const carouselSlides = window.dashRawData.slice(0, 5).map(card => ({
+                    title: card.label,
+                    value: card.format ? card.val.toLocaleString() : card.val,
+                    meta: `المجموع الكلي للإحصائية`,
+                    color1: card.hexColor,
+                    color2: card.hexColor + 'dd'
+                }));
+                
+                const carouselContainer = document.getElementById('statsCarousel');
+                if (carouselContainer) {
+                    initCarousel('statsCarousel', carouselSlides);
+                    startCarouselAutoPlay('statsCarousel', 6000);
+                    carouselInitialized = true;
+                }
+            }
+        };
     </script>
 </body>
 
